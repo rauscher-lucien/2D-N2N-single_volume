@@ -86,27 +86,37 @@ def compute_global_mean_and_std(dataset_path, checkpoints_path):
     Parameters:
     - dataset_path: Path to the directory containing the TIFF files.
     """
-    all_means = []
-    all_stds = []
-    for subdir, _, files in os.walk(dataset_path):
-        for filename in files:
-            if filename.lower().endswith(('.tif', '.tiff')):
-                filepath = os.path.join(subdir, filename)
-                stack = tifffile.imread(filepath)
-                all_means.append(np.mean(stack))
-                all_stds.append(np.std(stack))
-                
-    global_mean = np.mean(all_means)
-    global_std = np.mean(all_stds)
-    
     # Define the save_path in the same directory as the dataset
     save_path = os.path.join(checkpoints_path, 'normalization_params.pkl')
 
-    # Save the computed global mean and standard deviation to a file
-    with open(save_path, 'wb') as f:
-        pickle.dump({'mean': global_mean, 'std': global_std}, f)
-    
-    print(f"Global mean and std parameters saved to {checkpoints_path}")
+    # Check if the normalization_params.pkl file already exists
+    if os.path.exists(save_path):
+        # Load the existing mean and std values
+        with open(save_path, 'rb') as f:
+            params = pickle.load(f)
+            global_mean = params['mean']
+            global_std = params['std']
+        print(f"Loaded global mean and std parameters from {save_path}")
+    else:
+        all_means = []
+        all_stds = []
+        for subdir, _, files in os.walk(dataset_path):
+            for filename in files:
+                if filename.lower().endswith(('.tif', '.tiff')):
+                    filepath = os.path.join(subdir, filename)
+                    stack = tifffile.imread(filepath)
+                    all_means.append(np.mean(stack))
+                    all_stds.append(np.std(stack))
+                    
+        global_mean = np.mean(all_means)
+        global_std = np.mean(all_stds)
+        
+        # Save the computed global mean and standard deviation to a file
+        with open(save_path, 'wb') as f:
+            pickle.dump({'mean': global_mean, 'std': global_std}, f)
+        
+        print(f"Global mean and std parameters saved to {save_path}")
+
     return global_mean, global_std
 
 
