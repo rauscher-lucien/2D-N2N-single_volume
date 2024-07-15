@@ -46,11 +46,11 @@ def main():
         parser.add_argument('--train_data_dir', type=str, help='Path to the train data directory')
         parser.add_argument('--val_data_dir', type=str, help='Path to the validation data directory')
         parser.add_argument('--project_name', type=str, help='Name of the project')
-        parser.add_argument('--model_name', type=str, default='UNet3', help='Name of the model (default: UNet3)')
         parser.add_argument('--train_continue', type=str, default='off', choices=['on', 'off'],
                             help='Flag to continue training: "on" or "off" (default: "off")')
         parser.add_argument('--disp_freq', type=int, default=10, help='Display frequency (default: 10)')
         parser.add_argument('--val_freq', type=int, default=10, help='Validation frequency (default: 10)')
+        parser.add_argument('--model_name', type=str, default='UNet3', help='Name of the model (default: UNet3)')
         parser.add_argument('--unet_base', type=int, default=32, help='Base number of filters in UNet (default: 32)')
         parser.add_argument('--num_epoch', type=int, default=1000, help='Number of epochs (default: 1000)')
         parser.add_argument('--batch_size', type=int, default=8, help='Batch size (default: 8)')
@@ -61,23 +61,23 @@ def main():
         train_data_dir = args.train_data_dir
         val_data_dir = args.val_data_dir
         project_name = args.project_name
-        model_name = args.model_name
         train_continue = args.train_continue
         disp_freq = args.disp_freq
         val_freq = args.val_freq
+        model_name = args.model_name
         unet_base = args.unet_base
         num_epoch = args.num_epoch
         batch_size = args.batch_size
         lr = args.lr
-        project_dir = os.path.join('/g', 'prevedel', 'members', 'Rauscher', 'projects', 'one_adj_slice')
+        project_dir = os.path.join('/g', 'prevedel', 'members', 'Rauscher', 'final_projects', '2D-N2N-single_volume')
         
         print(f"Using train data directory: {train_data_dir}")
         print(f"Using val data directory: {val_data_dir}")
         print(f"Project name: {project_name}")
-        print(f"Model name: {model_name}")
         print(f"Train continue: {train_continue}")
         print(f"Display frequency: {disp_freq}")
         print(f"Validation frequency: {val_freq}")
+        print(f"Model name: {model_name}")
         print(f"UNet base: {unet_base}")
         print(f"Number of epochs: {num_epoch}")
         print(f"Batch size: {batch_size}")
@@ -89,10 +89,10 @@ def main():
         val_data_dir = r"C:\Users\rausc\Documents\EMBL\data\Nematostella_B"
         project_dir = r"C:\Users\rausc\Documents\EMBL\final_projects\2D-N2N-single_volume"
         project_name = 'Nema_B-test_x'
-        model_name = 'UNet3'
         train_continue = 'off'
         disp_freq = 1
         val_freq = 1
+        model_name = 'UNet3'
         unet_base = 32
         num_epoch = 1000
         batch_size = 8
