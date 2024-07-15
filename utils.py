@@ -9,9 +9,13 @@ import tifffile
 import pickle
 import matplotlib.pyplot as plt
 
-def create_result_dir(project_dir, name='new_results'):
 
-    os.makedirs(project_dir, exist_ok=True)
+def create_result_dir(project_dir, project_name, hyperparameters, train_data_dir):
+    # Create a name based on project name, training directory, and hyperparameters
+    base_name = os.path.basename(train_data_dir)
+    hyperparams_str = '_'.join([f"{key}{value}" for key, value in hyperparameters.items()])
+    name = f"{project_name}_{base_name}_{hyperparams_str}"
+
     results_dir = os.path.join(project_dir, name, 'results')
     os.makedirs(results_dir, exist_ok=True)
     checkpoints_dir = os.path.join(project_dir, name, 'checkpoints')
@@ -19,10 +23,7 @@ def create_result_dir(project_dir, name='new_results'):
 
     return results_dir, checkpoints_dir
 
-
 def create_train_val_dir(results_dir):
-
-    os.makedirs(results_dir, exist_ok=True)
     train_dir = os.path.join(results_dir, 'train')
     os.makedirs(train_dir, exist_ok=True)
     val_dir = os.path.join(results_dir, 'val')

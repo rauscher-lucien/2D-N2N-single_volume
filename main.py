@@ -73,7 +73,6 @@ def main():
         
         print(f"Using train data directory: {train_data_dir}")
         print(f"Using val data directory: {val_data_dir}")
-        print(f"Project name: {project_name}")
         print(f"Train continue: {train_continue}")
         print(f"Display frequency: {disp_freq}")
         print(f"Validation frequency: {val_freq}")

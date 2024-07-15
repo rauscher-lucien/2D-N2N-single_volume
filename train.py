@@ -16,7 +16,6 @@ from model import *
 
 
 class Trainer:
-
     def __init__(self, data_dict):
         self.train_data_dir = data_dict['train_data_dir']
         print("train data:")
@@ -28,9 +27,6 @@ class Trainer:
 
         self.project_dir = data_dict['project_dir']
         self.project_name = data_dict['project_name']
-
-        self.results_dir, self.checkpoints_dir = create_result_dir(self.project_dir, self.project_name)
-        self.train_results_dir, self.val_results_dir = create_train_val_dir(self.results_dir)
 
         self.disp_freq = data_dict['disp_freq']
         self.val_freq = data_dict['val_freq']
@@ -46,7 +42,14 @@ class Trainer:
 
         self.device = get_device()
 
+        # Create result and checkpoint directories with new naming convention
+        self.results_dir, self.checkpoints_dir = create_result_dir(
+            self.project_dir, self.project_name, self.hyperparameters, self.train_data_dir)
+        self.train_results_dir, self.val_results_dir = create_train_val_dir(self.results_dir)
+
         self.writer = SummaryWriter(self.results_dir + '/tensorboard_logs')
+
+
 
     def save(self, checkpoints_dir, model, optimizer, epoch):
         if not os.path.exists(checkpoints_dir):

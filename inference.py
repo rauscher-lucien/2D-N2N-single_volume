@@ -56,7 +56,7 @@ def main():
 
     #********************************************************#
 
-    project_dir = r"C:\Users\rausc\Documents\EMBL\final_projects\2D-N2N-single_volume\Nema_B-test_x"
+    project_dir = r"\\tier2.embl.de\prevedel\members\Rauscher\final_projects\2D-N2N-single_volume\nema-test_1"
     data_dir = r"C:\Users\rausc\Documents\EMBL\data\Nematostella_B"
     project_name = os.path.basename(project_dir)
     inference_name = os.path.basename(data_dir)
