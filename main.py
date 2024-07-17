@@ -84,10 +84,10 @@ def main():
 
     else:
         # Default settings for local testing
-        train_data_dir = r"C:\Users\rausc\Documents\EMBL\data\Nematostella_B"
-        val_data_dir = r"C:\Users\rausc\Documents\EMBL\data\Nematostella_B"
+        train_data_dir = r"\\tier2.embl.de\prevedel\members\Rauscher\data\big_data_small-test"
+        val_data_dir = r"\\tier2.embl.de\prevedel\members\Rauscher\data\big_data_small-test"
         project_dir = r"C:\Users\rausc\Documents\EMBL\final_projects\2D-N2N-single_volume"
-        project_name = 'Nema_B-test_x'
+        project_name = 'test_x'
         train_continue = 'off'
         disp_freq = 1
         val_freq = 1
