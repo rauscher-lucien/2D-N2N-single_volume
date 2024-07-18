@@ -8,7 +8,6 @@ import logging
 from torchvision import transforms
 from torch.utils.tensorboard import SummaryWriter
 
-
 from utils import *
 from transforms import *
 from dataset import *
@@ -39,6 +38,7 @@ class Trainer:
         self.num_epoch = self.hyperparameters['num_epoch']
         self.batch_size = self.hyperparameters['batch_size']
         self.lr = self.hyperparameters['lr']
+        self.patience = self.hyperparameters.get('patience', 10)  # Load patience with a default value
 
         self.device = get_device()
 
@@ -48,8 +48,6 @@ class Trainer:
         self.train_results_dir, self.val_results_dir = create_train_val_dir(self.results_dir)
 
         self.writer = SummaryWriter(self.results_dir + '/tensorboard_logs')
-
-
 
     def save(self, checkpoints_dir, model, optimizer, epoch):
         if not os.path.exists(checkpoints_dir):
@@ -97,7 +95,7 @@ class Trainer:
 
         transform_train = transforms.Compose([
             Normalize(mean, std),
-            RandomCrop(output_size=(64,64)),
+            RandomCrop(output_size=(64, 64)),
             RandomHorizontalFlip(),
             ToTensor()
         ])
@@ -109,7 +107,7 @@ class Trainer:
 
         val_transform = transforms.Compose([
             Normalize(mean, std),
-            RandomCrop(output_size=(128,128)),
+            RandomCrop(output_size=(128, 128)),
             ToTensor(),
         ])
 
@@ -122,7 +120,7 @@ class Trainer:
             shuffle=True,
             num_workers=0
         )
-        
+
         dataset_val = TwoSliceDataset(self.val_data_dir, transform=val_transform)
 
         val_loader = torch.utils.data.DataLoader(
@@ -139,6 +137,7 @@ class Trainer:
 
         st_epoch = 0
         best_val_loss = float('inf')
+        patience_counter = 0  # Initialize patience counter
 
         if self.train_continue == 'on':
             print(self.checkpoints_dir)
@@ -194,6 +193,16 @@ class Trainer:
             if avg_val_loss < best_val_loss:
                 best_val_loss = avg_val_loss
                 self.save(self.checkpoints_dir, model, optimizer, epoch)
+                patience_counter = 0  # Reset patience counter
                 print(f"Saved best model at epoch {epoch} with validation loss {best_val_loss:.4f}.")
+            else:
+                patience_counter += 1  # Increment patience counter
+                print(f'Patience Counter: {patience_counter}/{self.patience}')
+
+            # Check for early stopping
+            if patience_counter >= self.patience:
+                print(f'Early stopping triggered after {epoch} epochs')
+                break
 
         self.writer.close()
+
